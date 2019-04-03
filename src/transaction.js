@@ -32,9 +32,11 @@ Transaction.DEFAULT_SEQUENCE = 0xffffffff
 Transaction.SIGHASH_ALL = 0x01
 Transaction.SIGHASH_NONE = 0x02
 Transaction.SIGHASH_SINGLE = 0x03
+Transaction.SIGHASH_FORKID = 0x40
 Transaction.SIGHASH_ANYONECANPAY = 0x80
 Transaction.ADVANCED_TRANSACTION_MARKER = 0x00
 Transaction.ADVANCED_TRANSACTION_FLAG = 0x01
+Transaction.FORKID_CBN_LYRA2RC0BAN = 88
 
 const EMPTY_SCRIPT = Buffer.allocUnsafe(0)
 const EMPTY_WITNESS = []

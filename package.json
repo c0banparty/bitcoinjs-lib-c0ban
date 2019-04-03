@@ -1,7 +1,7 @@
 {
-  "name": "bitcoinjs-lib",
-  "version": "4.0.3",
-  "description": "Client-side Bitcoin JavaScript library",
+  "name": "bitcoinjs-lib-c0ban",
+  "version": "0.0.2",
+  "description": "Client-side c0ban JavaScript library",
   "main": "./src/index.js",
   "engines": {
     "node": ">=8.0.0"

@@ -23,8 +23,8 @@ function fromDER (x) {
 
 // BIP62: 1 byte hashType flag (only 0x01, 0x02, 0x03, 0x81, 0x82 and 0x83 are allowed)
 function decode (buffer) {
-  const hashType = buffer.readUInt8(buffer.length - 1)
-  const hashTypeMod = hashType & ~0x80
+  const hashType = buffer.readUInt16(buffer.length - 2)
+  const hashTypeMod = hashType & ~0xffc0
   if (hashTypeMod <= 0 || hashTypeMod >= 4) throw new Error('Invalid hashType ' + hashType)
 
   const decode = bip66.decode(buffer.slice(0, -1))
@@ -40,14 +40,15 @@ function decode (buffer) {
 function encode (signature, hashType) {
   typeforce({
     signature: types.BufferN(64),
-    hashType: types.UInt8
+    hashType: types.UInt16
   }, { signature, hashType })
 
-  const hashTypeMod = hashType & ~0x80
+  const hashTypeMod = hashType & ~0xffc0
   if (hashTypeMod <= 0 || hashTypeMod >= 4) throw new Error('Invalid hashType ' + hashType)
 
   const hashTypeBuffer = Buffer.allocUnsafe(1)
-  hashTypeBuffer.writeUInt8(hashType, 0)
+  // Remove extra byte from hashtype for bip66 and second HF(lyra2rc0ban). bip66 sighash byte size = 1. 
+  hashTypeBuffer.writeUInt8((hashType & ~0xff00), 0)
 
   const r = toDER(signature.slice(0, 32))
   const s = toDER(signature.slice(32, 64))

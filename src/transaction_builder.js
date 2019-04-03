@@ -644,7 +644,9 @@ TransactionBuilder.prototype.sign = function (vin, keyPair, redeemScript, hashTy
   if (keyPair.network && keyPair.network !== this.network) throw new TypeError('Inconsistent network')
   if (!this.__inputs[vin]) throw new Error('No input at index: ' + vin)
 
-  hashType = hashType || Transaction.SIGHASH_ALL
+  hashType = hashType || (Transaction.SIGHASH_ALL | Transaction.SIGHASH_FORKID) // First HF
+  hashType = (Transaction.FORKID_CBN_LYRA2RC0BAN << 8) | (hashType & 0xff) // Second HF (lyra2rc0ban)
+
   if (this.__needsOutputs(hashType)) throw new Error('Transaction needs outputs')
 
   const input = this.__inputs[vin]
